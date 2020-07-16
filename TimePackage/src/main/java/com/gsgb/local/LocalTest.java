@@ -2,10 +2,7 @@ package com.gsgb.local;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
+import java.time.*;
 import java.time.temporal.ChronoField;
 
 
@@ -21,21 +18,42 @@ public class LocalTest {
 
     /**
      * 1.now()方法获取当前时间
-     * 测试不带时区的时间日期类的空参的now方法，获取当前时间
      */
     @Test
     public void testNow() {
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDate localDate = LocalDate.now();
         LocalTime localTime = LocalTime.now();
+        Instant instant = Instant.now(); // 时间戳
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(); // 带时区的类
 
         System.out.println("localDateTime的时间是:" + localDateTime);
         System.out.println("localDate的时间是:" + localDate);
         System.out.println("localTime的时间是:" + localTime);
+        System.out.println("instant的时间是:" + instant);
+        System.out.println("zonedDateTime的时间是:" + zonedDateTime);
     }
 
     /**
-     * 2.获取一些常量
+     * 2.now()方法,其他类的now方法
+     */
+    @Test
+    public void testNow02() {
+        // 代表年份的Year类
+        Year year = Year.now();
+        // 代表一年中的某月的YearMonth类
+        YearMonth yearMonth = YearMonth.now();
+        // 代表一月中的某天的MonthDay类
+        MonthDay monthDay = MonthDay.now();
+
+        System.out.println("当前的年份为: " + year);
+        System.out.println("当前的年份和月份为: " + yearMonth);
+        System.out.println("当前的月份和天数为: " + monthDay);
+
+    }
+
+    /**
+     * 3.获取一些常量
      * 测试时间日期类的一些常量
      * 主要看{@link LocalTime}的一些
      */
@@ -47,14 +65,14 @@ public class LocalTest {
         System.out.println(LocalDate.MAX);
         System.out.println(LocalDate.MIN);*/
 
-        System.out.println("某一天的结束时间是:"+LocalTime.MAX);
-        System.out.println("某一天的开始时间是:"+LocalTime.MIN);
-        System.out.println("某一天的半夜时间是:"+LocalTime.MIDNIGHT);
-        System.out.println("某一天的正中午时间是:"+LocalTime.NOON);
+        System.out.println("某一天的结束时间是: " + LocalTime.MAX);
+        System.out.println("某一天的开始时间是: " + LocalTime.MIN);
+        System.out.println("某一天的半夜时间是: " + LocalTime.MIDNIGHT);
+        System.out.println("某一天的正中午时间是: " + LocalTime.NOON);
     }
 
     /**
-     * 3.of()方法获取指定时间
+     * 4.of()方法获取指定时间
      * 测试不带时区的时间日期类的of方法，获取指定时间
      */
     @Test
@@ -63,23 +81,65 @@ public class LocalTest {
         LocalDate date1 = LocalDate.of(1997, 8, 8); // 设置1997-08-08
         // Mouth是一个代表月份枚举类
         LocalDate date2 = LocalDate.of(2000, Month.JUNE, 23); // 设置2000-06-23
-        System.out.println("date1时间为:" + date1);
-        System.out.println("date2时间为:" + date2);
+        System.out.println("date1时间为: " + date1);
+        System.out.println("date2时间为: " + date2);
 
         // 2.LocalTime
         LocalTime time1 = LocalTime.of(8, 10);
-        System.out.println("time1时间为:" + time1);
+        System.out.println("time1时间为: " + time1);
 
         // 3.LocalDateTime
+        // 设置2015-09-05 8:30
         LocalDateTime dateTime1 = LocalDateTime.of(2015, 9, 5, 8, 30);
+        // 设置2019-06-25 12:00
         LocalDateTime dateTime2 = LocalDateTime.of(2019, Month.JUNE, 25, 12, 0);
-        System.out.println("dateTime1时间为:" + dateTime1);
-        System.out.println("dateTime2时间为:" + dateTime2);
+        System.out.println("dateTime1时间为: " + dateTime1);
+        System.out.println("dateTime2时间为: " + dateTime2);
 
         // LocalDateTime有个特殊的of方法
         // LocalDateTime of(LocalDate date, LocalTime time)
         LocalDateTime dateTime3 = LocalDateTime.of(date1, time1);
-        System.out.println("特殊of方法的dateTime3的时间为:" + dateTime3);
+        System.out.println("特殊of方法的dateTime3的时间为: " + dateTime3);
+
+        // 4.ZonedDateTime的of方法需要带上ZoneId，也就是指定时区，后面再说
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(dateTime3, ZoneId.systemDefault());
+        System.out.println("zonedDateTime的时间为: " + zonedDateTime);
+    }
+
+    /**
+     * 5.Month枚举类
+     */
+    @Test
+    public void testMonth() {
+        // 1.of方法创建对象
+        Month month = Month.of(7);
+
+        // 2.获取某月的最长天数和最短天数
+        int maxLength = Month.FEBRUARY.maxLength();
+        int minLength = Month.FEBRUARY.minLength();
+
+        // 3.获取某个月的 在/不在 闰年的长度
+        int julyLength = Month.JULY.length(true);
+
+        // 4.获取当前月份所在的季度的 第一个月份
+        // DECEMBER是12月，所以返回OCTOBER 9月
+        Month month2 = Month.DECEMBER.firstMonthOfQuarter();
+
+        // 5.获取某个月 在/不在 闰年的第一天在该年的天数
+        int monthValue = Month.JULY.firstDayOfYear(false);
+
+        // 6.顺便说下如何判断某年是否是闰年,Year类
+        boolean leap = Year.isLeap(Year.now().getValue());
+
+        System.out.println("Mouth的of方法: " + month);
+        System.out.println("某月的最长天数: " + maxLength);
+        System.out.println("某月的最短天数: " + minLength);
+        System.out.println("七月在闰年一个月的长度为: " + julyLength);
+        System.out.println("获取12月所在的季度的第一个月份: " + month2);
+        System.out.println("获取7月不在闰年的第一天在该年的天数: " + monthValue);
+
+        System.out.println("今年是否是闰年: " + (leap ? "是的" : "不是"));
+
     }
 
     /**
@@ -124,7 +184,7 @@ public class LocalTest {
      * isEqual
      */
     @Test
-    public void testCompare(){
+    public void testCompare() {
 
     }
 
@@ -132,7 +192,7 @@ public class LocalTest {
      * 6.with方法
      */
     @Test
-    public void testWith(){
+    public void testWith() {
 
     }
 
@@ -140,7 +200,7 @@ public class LocalTest {
      * minus
      */
     @Test
-    public void testPlusAndMinus(){
+    public void testPlusAndMinus() {
 
     }
 }
