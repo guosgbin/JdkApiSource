@@ -143,7 +143,7 @@ public class LocalTest {
     }
 
     /**
-     * 4.get方法
+     * 6.get方法
      * 测试不带时区的时间日期类的get方法，获取日期时间对象的各个字段值
      * 以LocalDateTime为例，其他两个是一样的
      */
@@ -151,6 +151,7 @@ public class LocalTest {
     public void testGet() {
         LocalDateTime dateTime = LocalDateTime.now();
 
+        System.out.println("当前时间:" + dateTime);
         System.out.println("获取年份:" + dateTime.getYear());
         System.out.println("获取月份枚举:" + dateTime.getMonth());
         System.out.println("获取月份:" + dateTime.getMonthValue());
@@ -159,7 +160,7 @@ public class LocalTest {
     }
 
     /**
-     * 5.日期类的特殊的Get方法
+     * 7.日期类的特殊的Get方法
      * 以LocalDateTime为例，其他两个是差不多的
      * 在{@link ChronoField}类中定义了一些具有特殊含义的枚举
      *
@@ -170,7 +171,7 @@ public class LocalTest {
         LocalDateTime dateTime = LocalDateTime.now();
         // AMPM_OF_DAY 表示时间是上午还是下午，0-上午，1-下午
         int amPmOfDay = dateTime.get(ChronoField.AMPM_OF_DAY);
-        System.out.println("现在时间在当天是:" + (amPmOfDay == 0 ? "上午" : "下午"));
+        System.out.println("现在时间在当天是:" + (amPmOfDay == 0 ? "AM" : "PM"));
 
         // MINUTE_OF_HOUR 表示时间的分钟数
         int clockHourOfDay = dateTime.get(ChronoField.MINUTE_OF_HOUR);
@@ -178,21 +179,45 @@ public class LocalTest {
     }
 
     /**
-     * 6.日期类的比较方法
+     * 8.日期类的比较方法，以LocalDateTime为例
      * isAfter
      * isBefore
      * isEqual
      */
     @Test
     public void testCompare() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime dateTime = LocalDateTime.of(2020, 7, 30, 12, 0);
+        // 调用比较方法
+        boolean before = now.isBefore(dateTime);
+        boolean equal = now.isEqual(dateTime);
+        boolean after = now.isAfter(dateTime);
 
+        System.out.println("当前时间是否在指定时间之前: " + before);
+        System.out.println("当前时间是否和指定时间相等: " + equal);
+        System.out.println("当前时间是否在指定时间之后: " + after);
     }
 
     /**
-     * 6.with方法
+     * 9.with方法，直接修改日期
      */
     @Test
     public void testWith() {
+        LocalDateTime now = LocalDateTime.now();
+        // 1.修改年份为2022年
+        LocalDateTime dateTime1 = now.withYear(2022);
+        // 2.修改分钟为10分
+        LocalDateTime dateTime2 = now.withMinute(10);
+        System.out.println("修改年份为2022后的时间为: " + dateTime1);
+        System.out.println("修改分钟为10分后的时间为: " + dateTime2);
+        System.out.println("修改前后是否是同一个对象：" + (now == dateTime1));
+    }
+
+    /**
+     * 10.with方法，根据TemporalField类型修改日期
+     */
+    @Test
+    public void testWith02(){
 
     }
 
