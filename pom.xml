@@ -12,6 +12,7 @@
     <modules>
         <module>TimePackage</module>
         <module>OptionalIntroduce</module>
+        <module>LambdaUsage</module>
     </modules>
 
     <dependencies>
